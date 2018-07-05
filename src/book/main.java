@@ -83,7 +83,7 @@ public class main {
 	        JSONArray ja = (JSONArray) ji.get("authors");
 	        int len = ja.size();
 	        if (ja != null) { 
-	           //int len =;
+	           
 	           for (int i=0;i<len;i++){ 
 	            list.add(ja.get(i).toString());
 	            System.out.print(list.get(i));

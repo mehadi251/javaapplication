@@ -1,11 +1,11 @@
 package book;
-
+// class for book
 public class book {
 
 	private String name;
 	private String authors;
 	private String publisheddate;
-
+// getter setter
 	public String getName() {
 		return name;
 	}
