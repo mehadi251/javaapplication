@@ -6,20 +6,23 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 public class main {
 	 public static void main(String []args) throws Exception {
-		 String fileName = "input.txt";
-		 String file="book-info-converter.properties";
-		 String s1,s2;
+		 String fileName = "input_txt.txt";    //input file
+		 String file="book-info-converter.properties";   //configuration file
 		 String[] splited=null;
+		
 		 BufferedReader in = null;
-		 try {
-		     in = new BufferedReader(new FileReader(file));
-		     String read = null;
-		     while ((read = in.readLine()) != null) {
-		         splited = read.split("\\=");
-		         for (String part : splited) {
-		            // System.out.println(part);
+		 try {                                                                    // configuration
+		     in = new BufferedReader(new FileReader(file));                       // file
+		     String read = null;                                                  // checking
+		     while ((read = in.readLine()) != null) {                             // for
+		         splited = read.split("\\=");                                     // txt or
+		         for (String part : splited) {                                    // json
+		            
 		         }
 		     }
 		 } catch (IOException e) {
@@ -32,7 +35,7 @@ public class main {
 		     }
 		 }
 		 
-		 System.out.println(splited[1]);
+		
 		 
 		  if (args.length > 0) { 
 		    fileName = args[0];
@@ -45,7 +48,7 @@ public class main {
 		  		"text format ...");
 		  
 		  
-		// parsing file "JSONExample.json"
+		
 		  try {
 			  
 			  
@@ -53,11 +56,10 @@ public class main {
 	         
 	        // typecasting obj to JSONObject
 	        JSONObject jo = (JSONObject) obj;
-	        System.out.println("The Book data is in " + 
+	        System.out.println("The Book data is in " +                                               //json format
 			  		"JSON " +"format ...");
-	        System.out.println(splited[1]);
-	        if(splited[1].equals("json")) {
-	        	System.out.println("Converting to " + 
+	        if(splited[1].equals("json")) {                                                        // json in configuration file so
+	        	System.out.println("Converting to " +                                              // do nothing
 				  		"JSON " +"format ...");
 			  System.out.println("Here is the output ...\r\n" + 
 				  		"++++");
@@ -65,13 +67,13 @@ public class main {
 	        	 System.out.println("----");
 	        	return;
 	        	}
-	        else {
+	        else {                                                                              // txt in configuration file so convert json to txt
 		  System.out.println("Converting to " + 
 			  		"TXT " +"format ...");
 		  System.out.println("Here is the output ...\r\n" + 
 			  		"++++");
 	         JSONObject ji= (JSONObject)jo.get("book");
-	        // getting firstName and lastName
+	        // getting Name and others
 	        String firstName = (String) ji.get("name");
 	        
 	         
@@ -89,14 +91,14 @@ public class main {
 	            System.out.print(", ");
 	           } 
 	        } 
-	        String lastName = (String) ji.get("published-date");
-	        System.out.println("\npublished-date"+": "+lastName);}
+	        String date = (String) ji.get("published-date");
+	        System.out.println("\npublished-date"+": "+date);}
 	}
 		  catch (Exception e) {
-			  System.out.println("The Book data is in " + 
+			  System.out.println("The Book data is in " +                                              // input file is in txt format
 				  		"TXT " +"format ...");
-			  if(splited[1].equals("txt")) {
-		        	System.out.println("Converting to " + 
+			  if(splited[1].equals("txt")) {														// txt in configuration file so
+		        	System.out.println("Converting to " + 											// do nothing
 					  		"TXT " +"format ...");
 				  System.out.println("Here is the output ...\r\n" + 
 					  		"++++");
@@ -104,15 +106,57 @@ public class main {
 		        	 System.out.println("----");
 		        	return;
 		        	}
-		        else {
-			  System.out.println("Converting to " + 
+		        else {																			// json in configuration file so 
+			  System.out.println("Converting to " + 											// converting txt to json
 				  		"JSON " +"format ...");
 			  System.out.println("Here is the output ...\r\n" + 
 				  		"++++");
+
+			  String[] splited1=null;
+				 BufferedReader in1 = null;
+				 book book = new book();
+			     
+				 try {
+				     in1 = new BufferedReader(new FileReader(fileName));
+				     String read = null;
+				    
+				     
+				     while ((read = in1.readLine()) != null) {
+				         splited1 = read.split("\\:");
+				         if(splited1[0].equals("Name")) {
+				        	 book.setName(splited1[1]);
+				         }
+				         else if(splited1[0].equals("Author")) {
+				        	 book.setAuthors(splited1[1]);
+				         }
+				         else if(splited1[0].equals("Published Date")) {
+				        	 book.setPublisheddate(splited1[1]);
+				         }
+				     }
+				 } catch (IOException e1) {
+				     System.out.println("There was a problem: " + e1);
+				     e1.printStackTrace();
+				 } finally {
+				     try {
+				         in1.close();
+				     } catch (Exception e1) {
+				     }
+				 }
+					
+					ObjectMapper objectMapper = new ObjectMapper();
+					try {
+						String jsonStr = objectMapper.writeValueAsString(book);
+						System.out.println(jsonStr);
+					} catch (JsonProcessingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				}
 		         
 		  
-	    }}
-		  System.out.println("----");
+	    }
+		  System.out.println("----");	  
 	 }
 		 
 		  
