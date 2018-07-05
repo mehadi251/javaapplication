@@ -1,0 +1,3 @@
+Name: Effective Java
+Author: Joshua Bloch, James gosling
+Published Date: October 2005
